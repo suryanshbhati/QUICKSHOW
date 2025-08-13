@@ -31,6 +31,11 @@ const AddShows = () => {
     }
   };
 
+  const handleSelect = (movieId) => {
+    setSelectedMovie(movieId);
+    console.log(selectedMovie);
+  }
+
   const handleDateTimeAdd = () => {
     if (!dateTimeInput) {
       return;
@@ -63,9 +68,9 @@ const AddShows = () => {
   const handleSubmit = async() => {
     try {
       setAddingShow(true);
-      if(!selectedMovie || Object.keys(dateTimeSelection).length === 0 || !showPrice){
-        return toast('Missing required fields');
-      }
+      // if(selectedMovie === null || showPrice.length === 0 || Object.keys(dateTimeSelection).length === 0){
+      //   return toast('Missing required fields');
+      // }
       
       //const showsInput = Object.entries(dateTimeSelection).map(([date, time]) => ({date, time}));
       const showsInput = Object.entries(dateTimeSelection).map(([date, times]) => ({
@@ -73,7 +78,7 @@ const AddShows = () => {
       time: times // Array of times for this date
       }));
       const payload = {
-        movieId: selectedMovie,
+        movieId: String(selectedMovie),
         showsInput,
         showPrice: Number(showPrice)
       };
@@ -110,7 +115,7 @@ const AddShows = () => {
       <div className='overflow-x-auto pb-4'>
         <div className='group flex flex-wrap gap-4 mt-4 w-max'>
           {nowPlayingMovies.map((movie) => (
-            <div key={movie.id} onClick={() => setSelectedMovie(movie.id)} className={`relative max-w-40 cursor-pointer group-hover:not-hover:opacity-40 hover:-translate-y-1 transition duration-300`}>
+            <div key={movie.id} onClick={() => handleSelect(movie.id)} className={`relative max-w-40 cursor-pointer group-hover:not-hover:opacity-40 hover:-translate-y-1 transition duration-300`}>
               <div className='relative rounded-lg overflow-hidden'>
                 <img src={image_base_url + movie.poster_path} alt="" className='w-full object-cover brightness-90' />
                 <div className='text-sm flex items-center justify-between p-2 bg-black/70 w-full absolute bottom-0 left-0'>
